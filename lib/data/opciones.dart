@@ -18,7 +18,9 @@ List db = [
       },
       {
         "nombre": "Licencia",
-        "tipo": "Texto",
+        "tipo": "Combo",
+        "dataCombo":["Aspirante", "Local", "Nacional", "Ordenación"],
+        "dataActual": "Aspirante",
         "hintText": 'Licencia',
         "labelText": 'Licencia',
         "icon": "Text_fields", "controll_id": 2, "habilitar": true
@@ -26,6 +28,8 @@ List db = [
       {
         "nombre": "Mes",
         "tipo": "Combo",
+        "dataCombo":["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Julio", "Agosto", "Septiembre","Octubre","Noviembre","Diciembre"],
+        "dataActual": "Enero",
         "hintText": 'Mes',
         "labelText": 'Mes',
         "icon": "Text_fields", "controll_id": 3, "habilitar": true
@@ -168,7 +172,7 @@ List db = [
       },
       {
         "nombre": "Celular",
-        "tipo": "Numerico",
+        "tipo": "Float",
         "hintText": 'Celular',
         "labelText": 'Celular',
         "icon": "monetization_on", "controll_id":  22, "habilitar": true
@@ -188,10 +192,10 @@ List db = [
         "icon": "monetization_on", "controll_id":  24, "habilitar": false
       },
       {
-        "nombre": "Nivelación",
+        "nombre": "Sostenimiento",
         "tipo": "Float",
-        "hintText": 'Nivelación',
-        "labelText": 'Nivelación',
+        "hintText": 'Sostenimiento',
+        "labelText": 'Sostenimiento',
         "icon": "monetization_on", "controll_id":  25, "habilitar": true
       },
       {
@@ -206,7 +210,7 @@ List db = [
         "tipo": "Float",
         "hintText": 'Total Egresos',
         "labelText": 'Total Egresos',
-        "icon": "monetization_on", "controll_id":  27, "habilitar": false
+        "icon": "monetization_on", "controll_id":  27, "habilitar": true
       },                                                  
     ]
   },
@@ -214,4 +218,4 @@ List db = [
 
 
 
-  List meses =["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Julio", "Agosto", "Septiembre","Octubre","Noviembre","Diciembre"];
+  

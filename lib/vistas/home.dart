@@ -14,13 +14,13 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List<TextEditingController> controladores = new List(30);
-  List<dynamic> mesesBox;
-  String mesActual;
+  String dataMes;
+  String dataLicencia;
   @override
   void initState() { 
     super.initState();
-    mesesBox = meses;
-    mesActual = mesesBox[0];
+    dataMes = "Enero";
+    dataLicencia ="Aspirante";
     for (var i = 0; i < controladores.length; i++) {
       controladores[i] = new TextEditingController();
     }
@@ -29,12 +29,6 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Aportes Mensuales'),backgroundColor: Color.fromRGBO(63, 63, 156, 1),),
-      floatingActionButton: FloatingActionButton(onPressed: (){
-        //Navigator.pushNamed(context, 'camara', arguments: widget.arguments);
-        print(controladores[3].text);
-        print(controladores[4].text);
-        }),
-      //body: Center(child: Text('Data ${widget.ruta.toString()}')),
       body: ListView(
         children: _generarData(),
       ),
@@ -85,13 +79,18 @@ class _HomeState extends State<Home> {
       }else if(v['tipo']=='Date'){
         return (crearInputFecha(context: context,hintText: v['hintText'],labelText: v['labelText'], controller: controladores[v['controll_id']], icon: v['icon'].toString().toLowerCase()));
       }else if(v['tipo']=='Combo'){
-        return generarComboBox(nombre: v['nombre'], icon: v['icon'].toString().toLowerCase(),controller: controladores[v['controll_id']]);
+        return generarComboBox(nombre: v['nombre'], icon: v['icon'].toString().toLowerCase(),controller: controladores[v['controll_id']], dataActual: v['dataActual'], idController: v['controll_id'], dataBox: v['dataCombo']);
       }else{
         return Container();
       }
   }
-
-  Widget generarComboBox({icon, nombre, controller}){
+  queUsar(String dataBox){
+    if (dataBox == 'Enero') {
+      return dataMes;
+    } else {
+    }
+  }
+  Widget generarComboBox({icon, nombre, controller, List dataBox, String dataActual, int idController}){
     Size dimension = MediaQuery.of(context).size;
     return Row(
       children: <Widget>[
@@ -111,17 +110,16 @@ class _HomeState extends State<Home> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10)),
             child: DropdownButton<String>(
-            value: mesActual,
+            value: dataActual=='Enero'?dataMes:dataLicencia,
             icon: Icon(Icons.arrow_drop_down),
             iconSize: 42,
             underline: SizedBox(),
             onChanged: (String newValue) {
               setState(() {
-                mesActual = newValue;
-                controller.text = newValue;
+                dataActual=="Enero"?dataMes = newValue:dataLicencia= newValue;
               });
             },
-            items:obtenerItemsComboBox(mesesBox)
+            items:obtenerItemsComboBox(dataBox)
             ),),
             ],),),
       ],
@@ -169,6 +167,7 @@ Widget crearInputNumero(
       labelText: labelText,
       enabled: enable,
       icon: generarIcono(icon),
+
     ),
   );
 }
@@ -179,6 +178,21 @@ Widget crearInputDecimal(
     controller: controller,
     inputFormatters: [DecimalTextInputFormatter(decimalRange: 2)],
     keyboardType: TextInputType.numberWithOptions(decimal: true),
+    onChanged: (v){
+      double totalAportesDistriales = 0;
+      double totalOrdenacion = 0.0;
+      for (var i = 6; i < 18; i++) {
+        String numActual = controladores[i].text??'0.0';
+        totalOrdenacion+= double.parse(numActual==''?'0.0':numActual);
+      }
+      for (var i = 19; i < 24; i++) {
+        String numActual = controladores[i].text??'0.0';
+        totalAportesDistriales+= double.parse(numActual==''?'0.0':numActual);
+      }
+      controladores[18].text = totalOrdenacion.toStringAsFixed(2);
+      controladores[24].text = totalAportesDistriales.toStringAsFixed(2);
+      
+    },
     decoration: InputDecoration(
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
       hintText: hintText,
@@ -188,12 +202,12 @@ Widget crearInputDecimal(
     ),
   );
 }
-  List<DropdownMenuItem<String>> obtenerItemsComboBox(mesesBox) {
+  List<DropdownMenuItem<String>> obtenerItemsComboBox(List dataBox) {
     List<DropdownMenuItem<String>> items = new List();
-    for (String mes in mesesBox) {
+    for (String data in dataBox) {
       items.add(new DropdownMenuItem(
-          value: mes,
-          child: new Text(mes)
+          value: data,
+          child: new Text(data)
       ));
     }
     return items;
